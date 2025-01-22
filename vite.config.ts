@@ -34,26 +34,26 @@ export default defineConfig({
         icons: [
           {
             purpose: 'maskable',
-            src: '/src/assets/icons/copy-72.png',
+            src: '/icons/copy-72.png',
             sizes: '72x72',
             type: 'image/png',
           },
           {
             purpose: 'any',
-            src: '/src/assets/icons/copy-96.png',
+            src: '/icons/copy-96.png',
             sizes: '96x96',
             type: 'image/png',
           },
           {
             purpose: 'any',
-            src: '/src/assets/icons/copy-192.png',
+            src: '/icons/copy-192.png',
             sizes: '192x192',
             type: 'image/png',
           },
         ],
         screenshots: [
           {
-            src: '/src/assets/images/screenshot-mobile.png',
+            src: '/images/screenshot-mobile.png',
             sizes: '720x1440',
             type: 'image/png',
             form_factor: 'narrow',
