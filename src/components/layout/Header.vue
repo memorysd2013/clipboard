@@ -1,13 +1,8 @@
-<script setup>
-import { useState } from '@/composable/useState';
-
-const { toggleAddItemFormShow } = useState;
-</script>
+<script setup lang="ts"></script>
 
 <template lang="pug">
 #header 
   div Clipboard
-  VanButton(size="small" @click="toggleAddItemFormShow()") Add Item
 </template>
 
 <style lang="less" scoped>

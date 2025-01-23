@@ -1,9 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { useState } from '@/composable/useState';
 import { useForm } from '@/composable/form/useForm';
 import { ref, onMounted, watch } from 'vue';
 import { createFormItemID } from '@/util/index';
 import { showToast } from 'vant';
+
+type Form = {
+  itemName: string;
+  itemValue: string;
+  id: string;
+};
 
 const { addItemFormShow, toggleAddItemFormShow } = useState;
 const { addNewFormItem, updateFormItem, formItemOnEditing, clearEditFormItem } = useForm;
@@ -15,7 +21,7 @@ const Form = {
   // isPassword: false,
 };
 
-const form = ref({});
+const form = ref<Form>(JSON.parse(JSON.stringify(Form)));
 
 const resetFrom = () => {
   Object.assign(form.value, Form);
@@ -78,6 +84,8 @@ const onPopupClose = () => {
 <template lang="pug">
 VanPopup(
   v-model:show="addItemFormShow"
+  round
+  lock-scroll
   @closed="onPopupClose"
 )
   VanCellGroup
@@ -88,6 +96,7 @@ VanPopup(
       maxlength="50"
       show-word-limit
       required
+      autocomplete="off"
     )
     VanField(
       v-model="form.itemValue"
@@ -97,14 +106,25 @@ VanPopup(
       type="textarea"
       show-word-limit
       required
+      autocomplete="off"
     )
-    VanButton(
-      type="primary" 
-      block
-      square
-      @click="onSubmit"
-    ) Submit
+    .button-wrapper
+      VanButton(
+        plain
+        @click="onSubmit"
+      ) Submit
 
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.button-wrapper {
+  display: flex;
+  justify-content: right;
+  padding: 1rem;
+  .van-button {
+    & + .van-button {
+      margin-left: 1rem;
+    }
+  }
+}
+</style>

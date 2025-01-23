@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@/composable/form/useForm';
 import { ref, nextTick } from 'vue';
 import { useClipboard } from '@vueuse/core';
-import { showToast } from 'vant';
+import { showToast, showDialog, type ToastWrapperInstance } from 'vant';
+import { type Form } from '@/composable/form/type';
 
 const active = ref(0);
 
@@ -10,9 +11,9 @@ const { form, editFormItem, deleteFormItem } = useForm;
 const { text, copy, copied, isSupported } = useClipboard();
 
 const clickedValue = ref('');
-const toastInstance = ref(null);
+const toastInstance = ref<ToastWrapperInstance | null>(null);
 
-const showBottomToast = (message) => {
+const showBottomToast = (message: string) => {
   if (toastInstance.value) {
     toastInstance.value?.close();
   }
@@ -23,7 +24,7 @@ const showBottomToast = (message) => {
     });
   });
 };
-const onCellClick = (val) => {
+const onCellClick = (val: string) => {
   if (isSupported.value) {
     copy(val);
     showBottomToast(`Copied: ${val}`);
@@ -31,54 +32,70 @@ const onCellClick = (val) => {
     showBottomToast('Your browser does not support Clipboard API');
   }
 };
+
+const onDelete = (item: Form.FormItem) => {
+  showDialog({
+    message: 'Are you sure you want to delete?',
+    showCancelButton: true,
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
+  })
+    .then(() => {
+      deleteFormItem(item);
+    })
+    .catch(() => {});
+};
 </script>
 
 <template lang="pug">
 // TODO
 //- VanTabs(v-model:active="active" sticky)
 //-   VanTab(v-for="(group, key, index) in form" :title="key")
-VanCellGroup
-  template(v-for="item in form")
-    VanSwipeCell
-      VanField(
-        :label="item.key"
-        type="textarea"
-        rows="1"
-        autosize
-        readonly
-        @click="onCellClick(item.value)"
-      )
-        template(#input)
-          .field-value {{ item.value }}
-          // TODO
-          //- VanTextEllipsis(
-          //-   :content="item.value"
-          //-   position="middle"
-          //-   expand-text="expand"
-          //-   collapse-text="collapse"
-          //- )
-      template(#right)
-        VanButton(square class="form-operator-button" type="primary" @click="editFormItem(item)")
-          VanIcon(name="edit")
-        VanButton(square class="form-operator-button" type="danger" @click="deleteFormItem(item)")
-          VanIcon(name="delete-o")
-            
+.form
+  VanCellGroup(inset)
+    template(v-for="item in form")
+      VanSwipeCell
+        VanField(
+          :label="item.key"
+          type="textarea"
+          rows="1"
+          autosize
+          readonly
+          @click="onCellClick(item.value)"
+        )
+          template(#input)
+            .field-value {{ item.value }}
+            // TODO
+            //- VanTextEllipsis(
+            //-   :content="item.value"
+            //-   position="middle"
+            //-   expand-text="expand"
+            //-   collapse-text="collapse"
+            //- )
+        template(#right)
+          VanButton(square class="form-operator-button" type="primary" @click="editFormItem(item)")
+            VanIcon(name="edit")
+          VanButton(square class="form-operator-button" type="danger" @click="onDelete(item)")
+            VanIcon(name="delete-o")
+
 </template>
 
 <style lang="scss" scoped>
-.cell-text {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.field-value {
-  color: var(--van-cell-value-color);
-  white-space: pre;
-  max-height: 120px;
-  width: 100%;
-  overflow-y: auto;
-}
-.form-operator-button {
-  height: 100%;
+.form {
+  .cell-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .field-value {
+    color: var(--van-cell-value-color);
+    white-space: pre;
+    max-height: 120px;
+    width: 100%;
+    overflow-y: auto;
+  }
+  .form-operator-button {
+    height: 100%;
+  }
 }
 </style>
