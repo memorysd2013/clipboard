@@ -4,10 +4,13 @@ import { ref, nextTick } from 'vue';
 import { useClipboard } from '@vueuse/core';
 import { showToast, showDialog, type ToastWrapperInstance } from 'vant';
 import { type Form } from '@/composable/form/type';
+import { useState } from '@/composable/useState';
+
+const { toggleAddItemFormShow } = useState;
 
 const active = ref(0);
 
-const { form, editFormItem, deleteFormItem } = useForm;
+const { storageForm, editFormItem, deleteFormItem } = useForm;
 const { text, copy, copied, isSupported } = useClipboard();
 
 const clickedValue = ref('');
@@ -53,11 +56,12 @@ const onDelete = (item: Form.FormItem) => {
 //-   VanTab(v-for="(group, key, index) in form" :title="key")
 .form
   VanCellGroup(inset)
-    template(v-for="item in form")
+    template(v-for="item in storageForm")
       VanSwipeCell
         VanField(
           :label="item.key"
           type="textarea"
+          size="large"
           rows="1"
           autosize
           readonly
@@ -78,6 +82,10 @@ const onDelete = (item: Form.FormItem) => {
           VanButton(square class="form-operator-button" type="danger" @click="onDelete(item)")
             VanIcon(name="delete-o")
 
+  .add-item-block(@click="toggleAddItemFormShow()")
+    VanIcon(name="plus")
+    span.add-text Add New Item
+
 </template>
 
 <style lang="scss" scoped>
@@ -96,6 +104,18 @@ const onDelete = (item: Form.FormItem) => {
   }
   .form-operator-button {
     height: 100%;
+  }
+
+  .add-item-block {
+    line-height: var(--van-cell-line-height);
+    padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .add-text {
+      margin-left: 0.5rem;
+    }
   }
 }
 </style>

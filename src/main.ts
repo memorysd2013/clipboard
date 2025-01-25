@@ -1,30 +1,34 @@
-import './assets/main.css';
 import 'vant/lib/index.css';
+import './assets/main.css';
 
 import {
-  Popup,
-  Field,
   Button,
-  CellGroup,
-  SwipeCell,
   Cell,
-  Tabs,
-  Tab,
-  TextEllipsis,
+  CellGroup,
+  ConfigProvider,
+  Empty,
+  Field,
   Icon,
+  Popup,
+  SwipeCell,
+  Tab,
+  Tabs,
+  TextEllipsis,
 } from 'vant';
 import { createApp } from 'vue';
 import App from './App.vue';
 
 const app = createApp(App);
-app.use(Popup);
-app.use(Field);
-app.use(CellGroup);
-app.use(Cell);
-app.use(SwipeCell);
-app.use(Tabs);
-app.use(Tab);
-app.use(TextEllipsis);
 app.use(Button);
+app.use(Cell);
+app.use(CellGroup);
+app.use(ConfigProvider);
+app.use(Empty);
+app.use(Field);
 app.use(Icon);
+app.use(Popup);
+app.use(SwipeCell);
+app.use(Tab);
+app.use(Tabs);
+app.use(TextEllipsis);
 app.mount('#app');
