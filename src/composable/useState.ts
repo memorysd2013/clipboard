@@ -1,14 +1,37 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { calculateLocalStorageRemaining } from '@/util/index';
 
 const useStateFactor = () => {
   const addItemFormShow = ref(false);
-  const toggleAddItemFormShow = (isShow: boolean | undefined = undefined) => {
-    addItemFormShow.value = isShow === undefined ? !addItemFormShow.value : isShow;
+  const toggleAddItemFormShow = (isShow: boolean | any = undefined) => {
+    addItemFormShow.value = typeof isShow === 'boolean' ? isShow : !addItemFormShow.value;
   };
+
+  const sidePanelShow = ref(false);
+  const toggleSidePanelShow = (isShow: boolean | any = undefined) => {
+    sidePanelShow.value = typeof isShow === 'boolean' ? isShow : !sidePanelShow.value;
+  };
+
+  const memoryRemainPercentage = ref(0);
+  const setMemoryRemainPercentage = () => {
+    const { remainingPercent } = calculateLocalStorageRemaining();
+    if (remainingPercent) memoryRemainPercentage.value = remainingPercent;
+  };
+
+  watch(
+    () => sidePanelShow.value,
+    (val) => {
+      if (val) setMemoryRemainPercentage();
+    },
+  );
 
   return {
     addItemFormShow,
     toggleAddItemFormShow,
+    sidePanelShow,
+    toggleSidePanelShow,
+    memoryRemainPercentage,
+    setMemoryRemainPercentage,
   };
 };
 

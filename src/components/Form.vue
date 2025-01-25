@@ -82,7 +82,7 @@ const onDelete = (item: Form.FormItem) => {
           VanButton(square class="form-operator-button" type="danger" @click="onDelete(item)")
             VanIcon(name="delete-o")
 
-  .add-item-block(@click="toggleAddItemFormShow()")
+  .add-item-block(@click="toggleAddItemFormShow")
     VanIcon(name="plus")
     span.add-text Add New Item
 
@@ -97,7 +97,8 @@ const onDelete = (item: Form.FormItem) => {
   }
   .field-value {
     color: var(--van-cell-value-color);
-    white-space: pre;
+    white-space: break-word;
+    word-break: break-all;
     max-height: 120px;
     width: 100%;
     overflow-y: auto;
@@ -108,7 +109,7 @@ const onDelete = (item: Form.FormItem) => {
 
   .add-item-block {
     line-height: var(--van-cell-line-height);
-    padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
+    padding: 0.875rem 0;
     display: flex;
     align-items: center;
     justify-content: center;

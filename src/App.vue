@@ -2,6 +2,7 @@
 import AddItemForm from '@/components/AddItemForm.vue';
 import Header from '@/components/layout/Header.vue';
 import Form from '@/components/Form.vue';
+import SidePanel from '@/components/SidePanel.vue';
 import { useForm } from '@/composable/form/useForm';
 import { useState } from '@/composable/useState';
 
@@ -20,11 +21,12 @@ VanConfigProvider(theme="dark")
   )
     VanButton(
       round 
-      @click="toggleAddItemFormShow()"
+      @click="toggleAddItemFormShow"
     ) Add New Item
   Form(v-else)
 
   AddItemForm
+  SidePanel
   
 </template>
 

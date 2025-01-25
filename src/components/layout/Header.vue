@@ -1,8 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useState } from '@/composable/useState';
+
+const { toggleSidePanelShow } = useState;
+</script>
 
 <template lang="pug">
 #header 
-  div Clipboard
+  div EZ Copy
+  VanIcon(
+    name="info-o"
+    size="18"
+    @click="toggleSidePanelShow"
+  )
 </template>
 
 <style lang="less" scoped>
