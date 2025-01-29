@@ -78,15 +78,28 @@ const onDelete = (item: Form.FormItem) => {
             //-   collapse-text="collapse"
             //- )
         template(#right)
-          VanButton(square class="form-operator-button" type="primary" @click="editFormItem(item)")
+          VanButton.form-operator-button(
+            square
+            type="primary"
+            @click="editFormItem(item)"
+          )
             VanIcon(name="edit")
-          VanButton(square class="form-operator-button" type="danger" @click="onDelete(item)")
+          //- VanButton.form-operator-button(
+          //-   square
+          //-   color="#707070"
+          //-   @click="togglePopover(index)"
+          //- )
+            VanIcon(name="ellipsis")
+          VanButton.form-operator-button(
+            square
+            type="danger"
+            @click="onDelete(item)"
+          )
             VanIcon(name="delete-o")
 
   .add-item-block(@click="toggleAddItemFormShow")
     VanIcon(name="plus")
     span.add-text Add New Item
-
 </template>
 
 <style lang="scss" scoped>
