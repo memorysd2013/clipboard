@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { showToast } from 'vant';
-import { onMounted, ref, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 import { useForm } from '@/composable/form/useForm';
 import { useState } from '@/composable/useState';
@@ -72,8 +72,10 @@ const onSubmit = () => {
       id: createFormItemID(),
     });
   }
-  toggleAddItemFormShow(false);
-  resetFrom();
+  nextTick(() => {
+    toggleAddItemFormShow(false);
+    resetFrom();
+  });
 };
 
 const onPopupClose = () => {
