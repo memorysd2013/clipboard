@@ -15,9 +15,7 @@ const useFormFactor = () => {
     storageForm.value.push(formItem);
   };
   const updateFormItem = (formItem: Form.FormItem) => {
-    console.log('formItem', formItem);
     const targetItem = storageForm.value.find((f) => f.id === formItem.id);
-    console.log('targetItem', targetItem);
     if (targetItem) {
       targetItem.key = formItem.key;
       targetItem.value = formItem.value;

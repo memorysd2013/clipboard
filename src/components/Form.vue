@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useForm } from '@/composable/form/useForm';
-import { ref, nextTick } from 'vue';
 import { useClipboard } from '@vueuse/core';
-import { showToast, showDialog, type ToastWrapperInstance } from 'vant';
+import { showDialog, showToast, type ToastWrapperInstance } from 'vant';
+import { nextTick, ref } from 'vue';
+
 import { type Form } from '@/composable/form/type';
+import { useForm } from '@/composable/form/useForm';
 import { useState } from '@/composable/useState';
 
 const { toggleAddItemFormShow } = useState;

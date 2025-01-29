@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useState } from '@/composable/useState';
-import { useForm } from '@/composable/form/useForm';
-import { ref, onMounted, watch } from 'vue';
-import { createFormItemID } from '@/util/index';
 import { showToast } from 'vant';
+import { onMounted, ref, watch } from 'vue';
+
+import { useForm } from '@/composable/form/useForm';
+import { useState } from '@/composable/useState';
+import { createFormItemID } from '@/util/index';
 
 type Form = {
   itemName: string;

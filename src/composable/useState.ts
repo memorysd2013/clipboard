@@ -1,14 +1,15 @@
 import { ref, watch } from 'vue';
+
 import { calculateLocalStorageRemaining } from '@/util/index';
 
 const useStateFactor = () => {
   const addItemFormShow = ref(false);
-  const toggleAddItemFormShow = (isShow: boolean | any = undefined) => {
+  const toggleAddItemFormShow = (isShow: boolean | Event) => {
     addItemFormShow.value = typeof isShow === 'boolean' ? isShow : !addItemFormShow.value;
   };
 
   const sidePanelShow = ref(false);
-  const toggleSidePanelShow = (isShow: boolean | any = undefined) => {
+  const toggleSidePanelShow = (isShow: boolean | Event) => {
     sidePanelShow.value = typeof isShow === 'boolean' ? isShow : !sidePanelShow.value;
   };
 
