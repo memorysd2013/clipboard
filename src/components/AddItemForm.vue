@@ -32,7 +32,7 @@ onMounted(() => {
   resetFrom();
 });
 
-watch(formItemOnEditing, (formItem) => {
+watch(formItemOnEditing, formItem => {
   if (formItem?.id) {
     form.value.itemName = formItem.key;
     form.value.itemValue = formItem.value;
@@ -116,7 +116,6 @@ VanPopup(
         plain
         @click="onSubmit"
       ) Submit
-
 </template>
 
 <style lang="less" scoped>

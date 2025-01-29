@@ -20,14 +20,13 @@ VanConfigProvider(theme="dark")
     description="Press button to add new item."
   )
     VanButton(
-      round 
+      round
       @click="toggleAddItemFormShow"
     ) Add New Item
   Form(v-else)
 
   AddItemForm
   SidePanel
-  
 </template>
 
 <style lang="scss" scoped></style>

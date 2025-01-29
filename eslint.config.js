@@ -3,6 +3,7 @@ import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
 import vueTsEslintConfig from '@vue/eslint-config-typescript';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import pluginVue from 'eslint-plugin-vue';
+import prettier from 'prettier';
 
 export default [
   {
@@ -16,6 +17,14 @@ export default [
     },
     rules: {
       "simple-import-sort/imports": "error",
+    },
+  },
+  {
+    plugins: {
+      "prettier": prettier,
+    },
+    rules: {
+      "prettier/prettier": "error",
     },
   },
 
@@ -32,7 +41,7 @@ export default [
       // Note: you must disable the base rule as it can report incorrect errors
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "off",
-      "vue/multi-word-component-names": "off"
+      "vue/multi-word-component-names": "off",
     }
   },
 
