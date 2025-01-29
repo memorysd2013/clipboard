@@ -1,7 +1,18 @@
+<!-- <script lang="ts">
+import Header from '@/components/layout/Header.vue';
+import AddItemForm from '@/components/AddItemForm.vue';
+import Form from '@/components/Form.vue';
+import SidePanel from '@/components/SidePanel.vue';
+import { useForm } from '@/composable/form/useForm';
+import { useState } from '@/composable/useState';
+
+const { isFormEmpty } = useForm;
+const { toggleAddItemFormShow } = useState;
+</script> -->
 <script setup lang="ts">
 import AddItemForm from '@/components/AddItemForm.vue';
-import Header from '@/components/layout/Header.vue';
 import Form from '@/components/Form.vue';
+import Header from '@/components/layout/Header.vue';
 import SidePanel from '@/components/SidePanel.vue';
 import { useForm } from '@/composable/form/useForm';
 import { useState } from '@/composable/useState';

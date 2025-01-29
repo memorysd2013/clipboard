@@ -1,5 +1,6 @@
-import { ref, computed } from 'vue';
 import { useStorage } from '@vueuse/core';
+import { computed,ref } from 'vue';
+
 import { type Form } from '@/composable/form/type';
 
 const FORM_KEY = 'storage-form';
@@ -15,7 +16,7 @@ const useFormFactor = () => {
   };
   const updateFormItem = (formItem: Form.FormItem) => {
     console.log('formItem', formItem);
-    let targetItem = storageForm.value.find((f) => f.id === formItem.id);
+    const targetItem = storageForm.value.find((f) => f.id === formItem.id);
     console.log('targetItem', targetItem);
     if (targetItem) {
       targetItem.key = formItem.key;
@@ -28,7 +29,7 @@ const useFormFactor = () => {
     formItemOnEditing.value = formItem;
   };
   const deleteFormItem = (formItem: Form.FormItem) => {
-    let index = storageForm.value.findIndex((f) => f.id === formItem.id);
+    const index = storageForm.value.findIndex((f) => f.id === formItem.id);
     if (index >= 0) {
       storageForm.value.splice(index, 1);
     }
