@@ -91,14 +91,9 @@ const onDelete = (item: Form.FormItem) => {
 
 <style lang="scss" scoped>
 .form {
-  .cell-text {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
   .field-value {
     color: var(--van-cell-value-color);
-    white-space: break-word;
+    white-space: pre-wrap;
     word-break: break-all;
     max-height: 120px;
     width: 100%;
@@ -109,6 +104,9 @@ const onDelete = (item: Form.FormItem) => {
   }
 
   .add-item-block {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--color-background);
     line-height: var(--van-cell-line-height);
     padding: 0.875rem 0;
     display: flex;
