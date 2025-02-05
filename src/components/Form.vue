@@ -97,9 +97,10 @@ const onDelete = (item: Form.FormItem) => {
           )
             VanIcon(name="delete-o")
 
-  .add-item-block(@click="toggleAddItemFormShow")
-    VanIcon(name="plus")
-    span.add-text Add New Item
+  .add-item-block.van-safe-area-bottom(@click="toggleAddItemFormShow")
+    .add-item-block-wrapper
+      VanIcon(name="plus")
+      span.add-text Add New Item
 </template>
 
 <style lang="scss" scoped>
@@ -121,14 +122,16 @@ const onDelete = (item: Form.FormItem) => {
     bottom: 0;
     background-color: var(--color-background);
     line-height: var(--van-cell-line-height);
-    padding: 0.875rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .add-text {
-      margin-left: 0.5rem;
+    .add-item-block-wrapper {
+      padding: 0.875rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .add-text {
+        margin-left: 0.5rem;
+      }
     }
+
   }
 }
 </style>
