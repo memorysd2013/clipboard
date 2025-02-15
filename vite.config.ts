@@ -61,6 +61,9 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true, // 讓新 SW 立即接管
         runtimeCaching: [
           {
             urlPattern: /someInterface/i,
@@ -81,6 +84,10 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 天
+              },
             },
           },
         ],
