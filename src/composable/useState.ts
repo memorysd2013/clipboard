@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 import { calculateLocalStorageRemaining } from '@/util/index';
 
@@ -19,9 +19,11 @@ const useStateFactor = () => {
     if (remainingPercent) memoryRemainPercentage.value = remainingPercent;
   };
 
+  const isZoomOut = computed(() => addItemFormShow.value || sidePanelShow.value);
+
   watch(
     () => sidePanelShow.value,
-    (val) => {
+    val => {
       if (val) setMemoryRemainPercentage();
     },
   );
@@ -33,6 +35,7 @@ const useStateFactor = () => {
     toggleSidePanelShow,
     memoryRemainPercentage,
     setMemoryRemainPercentage,
+    isZoomOut,
   };
 };
 
