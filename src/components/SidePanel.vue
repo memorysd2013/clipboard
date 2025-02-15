@@ -5,6 +5,15 @@ import { computed } from 'vue';
 const { sidePanelShow, memoryRemainPercentage } = useState;
 
 const appVer = computed(() => import.meta.env.VITE_APP_VERSION);
+
+const clearCache = () => {
+  caches.keys().then(cacheNames => {
+    cacheNames.forEach(cacheName => {
+      caches.delete(cacheName);
+    });
+    window.location.reload();
+  });
+};
 </script>
 
 <template lang="pug">
@@ -18,19 +27,19 @@ const appVer = computed(() => import.meta.env.VITE_APP_VERSION);
         .info-item-title Remain memory:
         .info-item-value {{ memoryRemainPercentage }}%
 
+    .divider
     .version-block
+      VanButton(
+        size="mini"
+        icon="replay"
+        @click="clearCache"
+      ) Reload
       div v{{ appVer }}
 </template>
 
 <style lang="scss" scoped>
 .side-panel {
-  .info {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
   .info-item {
-    margin-bottom: 0.5rem;
     font-size: 0.875rem;
     display: flex;
     justify-content: space-between;
@@ -42,12 +51,21 @@ const appVer = computed(() => import.meta.env.VITE_APP_VERSION);
       flex: 0 0 auto;
     }
   }
-
+  & + .info-item {
+    margin-top: 0.5rem;
+  }
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ebebeb;
+    opacity: 0.4;
+    margin: 1rem 0;
+  }
   .version-block {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.75rem;
-    padding-top: 0.5rem;
     opacity: 0.6;
   }
   .side-panel-dialog {

@@ -19,7 +19,6 @@ import {
   Field,
   Icon,
   Popup,
-  PullRefresh,
   SwipeCell,
   Tab,
   Tabs,
@@ -38,7 +37,6 @@ app.use(Empty);
 app.use(Field);
 app.use(Icon);
 app.use(Popup);
-app.use(PullRefresh);
 app.use(SwipeCell);
 app.use(Tab);
 app.use(Tabs);
