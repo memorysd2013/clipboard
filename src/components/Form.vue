@@ -2,6 +2,7 @@
 import { useClipboard } from '@vueuse/core';
 import { showDialog, showToast, type ToastWrapperInstance } from 'vant';
 import { nextTick, ref } from 'vue';
+import Draggable from 'vuedraggable';
 
 import { type Form } from '@/composable/form/type';
 import { useForm } from '@/composable/form/useForm';
@@ -57,45 +58,49 @@ const onDelete = (item: Form.FormItem) => {
 //-   VanTab(v-for="(group, key, index) in form" :title="key")
 .form
   VanCellGroup(inset)
-    template(v-for="item in storageForm")
-      VanSwipeCell
-        VanField(
-          :label="item.key"
-          type="textarea"
-          size="large"
-          rows="1"
-          autosize
-          readonly
-          @click="onCellClick(item.value)"
-        )
-          template(#input)
-            .field-value {{ item.value }}
-            // TODO
-            //- VanTextEllipsis(
-            //-   :content="item.value"
-            //-   position="middle"
-            //-   expand-text="expand"
-            //-   collapse-text="collapse"
+    Draggable(
+      v-model="storageForm"
+      item-key="id"
+    )
+      template(#item="{ element }")
+        VanSwipeCell
+          VanField(
+            :label="element.key"
+            type="textarea"
+            size="large"
+            rows="1"
+            autosize
+            readonly
+            @click="onCellClick(element.value)"
+          )
+            template(#input)
+              .field-value {{ element.value }}
+              // TODO
+              //- VanTextEllipsis(
+              //-   :content="element.value"
+              //-   position="middle"
+              //-   expand-text="expand"
+              //-   collapse-text="collapse"
+              //- )
+          template(#right)
+            VanButton.form-operator-button(
+              square
+              type="primary"
+              @click="editFormItem(element)"
+            )
+              VanIcon(name="edit")
+            //- VanButton.form-operator-button(
+            //-   square
+            //-   color="#707070"
+            //-   @click="togglePopover(index)"
             //- )
-        template(#right)
-          VanButton.form-operator-button(
-            square
-            type="primary"
-            @click="editFormItem(item)"
-          )
-            VanIcon(name="edit")
-          //- VanButton.form-operator-button(
-          //-   square
-          //-   color="#707070"
-          //-   @click="togglePopover(index)"
-          //- )
-            VanIcon(name="ellipsis")
-          VanButton.form-operator-button(
-            square
-            type="danger"
-            @click="onDelete(item)"
-          )
-            VanIcon(name="delete-o")
+              VanIcon(name="ellipsis")
+            VanButton.form-operator-button(
+              square
+              type="danger"
+              @click="onDelete(element)"
+            )
+              VanIcon(name="delete-o")
 
   .add-item-block.van-safe-area-bottom(@click="toggleAddItemFormShow")
     .add-item-block-wrapper
@@ -131,7 +136,6 @@ const onDelete = (item: Form.FormItem) => {
         margin-left: 0.5rem;
       }
     }
-
   }
 }
 </style>
