@@ -8,7 +8,7 @@ import { type Form } from '@/composable/form/type';
 import { useForm } from '@/composable/form/useForm';
 import { useState } from '@/composable/useState';
 
-const { toggleAddItemFormShow } = useState;
+const { lockDraggable, setLockDraggable, toggleAddItemFormShow } = useState;
 
 const active = ref(0);
 
@@ -60,10 +60,11 @@ const onDelete = (item: Form.FormItem) => {
   VanCellGroup(inset)
     Draggable(
       v-model="storageForm"
+      :disabled="lockDraggable"
       item-key="id"
     )
       template(#item="{ element }")
-        VanSwipeCell
+        VanSwipeCell(:disabled="!lockDraggable")
           VanField(
             :label="element.key"
             type="textarea"
@@ -102,10 +103,18 @@ const onDelete = (item: Form.FormItem) => {
             )
               VanIcon(name="delete-o")
 
-  .add-item-block.van-safe-area-bottom(@click="toggleAddItemFormShow")
-    .add-item-block-wrapper
+  .form-bottom.van-safe-area-bottom
+    .form-bottom-item-wrapper(@click="toggleAddItemFormShow")
       VanIcon(name="plus")
       span.add-text Add New Item
+
+    // TODO: state migration
+    .form-bottom-item-wrapper(@click="() => setLockDraggable(!lockDraggable)")
+      VanIcon.icon-animation(
+        name="exchange"
+        :class="{ rotate: lockDraggable }"
+      )
+      span.add-text {{ lockDraggable ? 'Order exchange' : 'Edit content' }}
 </template>
 
 <style lang="scss" scoped>
@@ -122,18 +131,26 @@ const onDelete = (item: Form.FormItem) => {
     height: 100%;
   }
 
-  .add-item-block {
+  .form-bottom {
     position: sticky;
     bottom: 0;
     background-color: var(--color-background);
     line-height: var(--van-cell-line-height);
-    .add-item-block-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    .form-bottom-item-wrapper {
       padding: 0.875rem 0;
       display: flex;
       align-items: center;
       justify-content: center;
       .add-text {
         margin-left: 0.5rem;
+      }
+      .rotate {
+        transform: rotate(90deg);
+      }
+      .icon-animation {
+        transition: transform 0.2s;
       }
     }
   }

@@ -19,6 +19,11 @@ const useStateFactor = () => {
     if (remainingPercent) memoryRemainPercentage.value = remainingPercent;
   };
 
+  const lockDraggable = ref(true);
+  const setLockDraggable = (val: boolean) => {
+    lockDraggable.value = val;
+  };
+
   const isZoomOut = computed(() => addItemFormShow.value || sidePanelShow.value);
 
   watch(
@@ -36,6 +41,8 @@ const useStateFactor = () => {
     memoryRemainPercentage,
     setMemoryRemainPercentage,
     isZoomOut,
+    lockDraggable,
+    setLockDraggable,
   };
 };
 
