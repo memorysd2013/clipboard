@@ -4,9 +4,13 @@ import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import vueDevTools from 'vite-plugin-vue-devtools';
+import { version } from './package.json';
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(version),
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -61,6 +65,9 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true, // 讓新 SW 立即接管
         runtimeCaching: [
           {
             urlPattern: /someInterface/i,
@@ -81,6 +88,10 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 1, // 1day
+              },
             },
           },
         ],

@@ -2,6 +2,7 @@
 import { useClipboard } from '@vueuse/core';
 import { showDialog, showToast } from 'vant';
 import { ref } from 'vue';
+import { computed } from 'vue';
 
 import { useForm } from '@/composable/form/useForm';
 import { useState } from '@/composable/useState';
@@ -90,6 +91,17 @@ const handleImport = () => {
       }
     });
 };
+
+const appVer = computed(() => import.meta.env.VITE_APP_VERSION);
+
+const clearCache = () => {
+  caches.keys().then(cacheNames => {
+    cacheNames.forEach(cacheName => {
+      caches.delete(cacheName);
+    });
+    window.location.reload();
+  });
+};
 </script>
 
 <template lang="pug">
@@ -98,15 +110,10 @@ const handleImport = () => {
     v-model:show="sidePanelShow"
     position="right"
   )
-    .info Information:
-    .info-item
-      .info-item-title Remain memory
-      VanCircle(
-        :rate="memoryRemainPercentage"
-        :speed="100"
-        :text="`${memoryRemainPercentage}%`"
-        layer-color="rgba(255,255,255,0.5)"
-      )
+    .info-block
+      .info-item
+        .info-item-title Remain memory:
+        .info-item-value {{ memoryRemainPercentage }}%
 
     .info-item.import-export-section
       .info-item-title Data Management
@@ -126,25 +133,54 @@ const handleImport = () => {
         block
         @click="handleImport"
       ) Import Data
+
+    .divider
+    .version-block
+      VanButton(
+        size="mini"
+        icon="replay"
+        @click="clearCache"
+      ) Reload
+      .version-text v{{ appVer || '1.0.0' }}
 </template>
 
 <style lang="scss" scoped>
 .side-panel {
-  .info {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+  .info-block {
+    margin-bottom: 1rem;
   }
+
   .info-item {
     margin-left: 0.5rem;
     margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .info-item-title {
+      flex: 0 0 auto;
+    }
+    .info-item-value {
+      flex: 0 0 auto;
+    }
+  }
+
+  .info-item.import-export-section {
+    margin-left: 0.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    flex-direction: column;
+    align-items: flex-start;
+
     .info-item-title {
       font-size: 0.875rem;
       margin-bottom: 0.5rem;
+      display: block;
+      width: 100%;
     }
-  }
-  .import-export-section {
-    margin-top: 1.5rem;
+
     .import-input {
       margin-top: 0.75rem;
       margin-bottom: 0.5rem;
@@ -158,9 +194,32 @@ const handleImport = () => {
       margin-top: 0.75rem;
     }
   }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ebebeb;
+    opacity: 0.4;
+    margin: 1rem 0;
+  }
+
+  .version-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    padding: 0 0.5rem;
+
+    .version-text {
+      margin-left: 0.5rem;
+    }
+  }
+
   .side-panel-dialog {
     height: 100%;
     padding: 1rem 1.5rem;
+    width: 260px;
   }
 }
 </style>
