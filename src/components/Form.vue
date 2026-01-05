@@ -91,7 +91,7 @@ const onDelete = (item: Form.FormItem) => {
             rows="1"
             autosize
             readonly
-            @click="handleCellClick($event, item.value)"
+            @click="handleCellClick($event, element.value)"
           )
             template(#input)
               .field-value {{ element.value }}
