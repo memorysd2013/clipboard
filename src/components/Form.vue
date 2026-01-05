@@ -5,6 +5,7 @@ import { nextTick, ref } from 'vue';
 
 import { type Form } from '@/composable/form/type';
 import { useForm } from '@/composable/form/useForm';
+import { useRipple } from '@/composable/useRipple';
 import { useState } from '@/composable/useState';
 
 const { toggleAddItemFormShow } = useState;
@@ -17,6 +18,10 @@ const { text, copy, copied, isSupported } = useClipboard();
 const clickedValue = ref('');
 const toastInstance = ref<ToastWrapperInstance | null>(null);
 
+// Ripple effect configuration variables
+const rippleColor = 'rgba(255, 255, 255, 0.5)'; // Ripple color
+const rippleDuration = 1000; // Ripple animation duration (milliseconds)
+
 const showBottomToast = (message: string) => {
   if (toastInstance.value) {
     toastInstance.value?.close();
@@ -28,7 +33,21 @@ const showBottomToast = (message: string) => {
     });
   });
 };
-const onCellClick = (val: string) => {
+
+const handleCellClick = (event: MouseEvent, val: string) => {
+  // Create ripple effect
+  const target = event.currentTarget as HTMLElement;
+  // Find element with field-with-ripple class (VanField root element)
+  const fieldElement = target.closest('.field-with-ripple') as HTMLElement;
+  if (fieldElement) {
+    const { createRipple } = useRipple(fieldElement, {
+      color: rippleColor,
+      duration: rippleDuration,
+    });
+    createRipple(event);
+  }
+
+  // Execute original click logic
   if (isSupported.value) {
     copy(val);
     showBottomToast(`Copied: ${val}`);
@@ -55,18 +74,18 @@ const onDelete = (item: Form.FormItem) => {
 // TODO
 //- VanTabs(v-model:active="active" sticky)
 //-   VanTab(v-for="(group, key, index) in form" :title="key")
-.form
+.form(:style="{ '--ripple-duration': `${rippleDuration}ms` }")
   VanCellGroup(inset)
     template(v-for="item in storageForm")
       VanSwipeCell
-        VanField(
+        VanField.field-with-ripple(
           :label="item.key"
           type="textarea"
           size="large"
           rows="1"
           autosize
           readonly
-          @click="onCellClick(item.value)"
+          @click="handleCellClick($event, item.value)"
         )
           template(#input)
             .field-value {{ item.value }}
@@ -104,6 +123,11 @@ const onDelete = (item: Form.FormItem) => {
 
 <style lang="scss" scoped>
 .form {
+  .field-with-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
   .field-value {
     color: var(--van-cell-value-color);
     white-space: pre-wrap;
@@ -129,6 +153,27 @@ const onDelete = (item: Form.FormItem) => {
     .add-text {
       margin-left: 0.5rem;
     }
+  }
+}
+
+// Ripple effect styles (global, because ripple elements are dynamically created)
+:global(.ripple-effect) {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 1;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+:global(.ripple-active) {
+  animation: ripple-animation var(--ripple-duration, 600ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(1);
+    opacity: 0;
   }
 }
 </style>
